@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepWork.io - Find Your Focus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #ffffff;
+            color: #000000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        main {
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 400;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .mockup-container {
+            width: 100%;
+            max-width: 300px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mockup-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 50px;
+
+        }
+
+        .download-btn {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            padding: 16px 48px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.2s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #333333;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            .mockup-container {
+                max-width: 350px;
+            }
+
+            .download-btn {
+                font-size: 20px;
+                padding: 18px 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>the tool for finding your focus</h1>
+        
+        <div class="mockup-container">
+            <img src="iphonemockup.png" alt="DeepWork.io app interface showing activity tracking">
+        </div>
+        
+        <a href="https://apps.apple.com/us/app/deepwork-io/id6748564027" class="download-btn">
+            download now
+        </a>
+    </main>
+</body>
+</html>
