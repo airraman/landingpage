@@ -47,6 +47,39 @@
             letter-spacing: 0.5px;
         }
 
+        .typewriter-container {
+            font-size: 18px;
+            font-weight: 400;
+            text-align: center;
+            letter-spacing: 0.5px;
+            min-height: 30px;
+        }
+
+        .typewriter-text {
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .color-green { color: #10b981; }
+        .color-red { color: #ef4444; }
+        .color-blue { color: #3b82f6; }
+        .color-purple { color: #a855f7; }
+        .color-orange { color: #f97316; }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 18px;
+            background-color: #000000;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
         .mockup-container {
             width: 100%;
             max-width: 300px;
@@ -58,8 +91,6 @@
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 50px;
-
         }
 
         .download-btn {
@@ -72,7 +103,6 @@
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
-            border-radius: 50px;
             transition: background-color 0.2s ease;
         }
 
@@ -83,6 +113,14 @@
         @media (min-width: 768px) {
             h1 {
                 font-size: 28px;
+            }
+
+            .typewriter-container {
+                font-size: 20px;
+            }
+
+            .cursor {
+                height: 20px;
             }
 
             .mockup-container {
@@ -100,6 +138,12 @@
     <main>
         <h1>the tool for finding your focus</h1>
         
+        <div class="typewriter-container">
+            <span>a tool for </span>
+            <span class="typewriter-text"></span>
+            <span class="cursor"></span>
+        </div>
+        
         <div class="mockup-container">
             <img src="iphonemockup.png" alt="DeepWork.io app interface showing activity tracking">
         </div>
@@ -108,5 +152,75 @@
             download now
         </a>
     </main>
+
+    <script>
+        const words = [
+            'coding',
+            'writing',
+            'designing',
+            'studying',
+            'reading',
+            'creating',
+            'building',
+            'learning',
+            'painting',
+            'composing',
+            'editing',
+            'researching',
+            'analyzing',
+            'planning',
+            'thinking',
+            'sketching',
+            'crafting'
+        ];
+
+        const colors = ['color-green', 'color-red', 'color-blue', 'color-purple', 'color-orange'];
+
+        let wordIndex = 0;
+        let colorIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterElement = document.querySelector('.typewriter-text');
+        const typingSpeed = 100;
+        const deletingSpeed = 50;
+        const pauseBeforeDelete = 3000;
+        const pauseBeforeType = 500;
+
+        function typeWriter() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let timeout = isDeleting ? deletingSpeed : typingSpeed;
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                timeout = pauseBeforeDelete;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                colorIndex = (colorIndex + 1) % colors.length;
+                
+                // Change color
+                typewriterElement.className = 'typewriter-text ' + colors[colorIndex];
+                
+                timeout = pauseBeforeType;
+            }
+
+            setTimeout(typeWriter, timeout);
+        }
+
+        // Set initial color and start
+        typewriterElement.className = 'typewriter-text ' + colors[colorIndex];
+        typeWriter();
+    </script>
 </body>
 </html>
+
+
