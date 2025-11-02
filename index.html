@@ -90,6 +90,7 @@
         .mockup-container img {
             width: 100%;
             height: auto;
+            border-radius: 50;
             display: block;
         }
 
@@ -102,6 +103,7 @@
             border: none;
             cursor: pointer;
             text-decoration: none;
+            border-radius: 50;
             display: inline-block;
             transition: background-color 0.2s ease;
         }
@@ -181,8 +183,8 @@
         let charIndex = 0;
         let isDeleting = false;
         const typewriterElement = document.querySelector('.typewriter-text');
-        const typingSpeed = 100;
-        const deletingSpeed = 50;
+        const typingSpeed = 200;
+        const deletingSpeed = 200;
         const pauseBeforeDelete = 3000;
         const pauseBeforeType = 500;
 
