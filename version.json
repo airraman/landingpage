@@ -1,8 +1,10 @@
 {
-    "minimumVersion": "1.0.0",
-    "latestVersion": "1.0.2",
+  "ios": {
+    "minimumVersion": "1.0.8",
+    "latestVersion": "1.0.8",
     "forceUpdate": false,
-    "message": "A new version of DeepWork is available. Please update to continue using the app.",
+    "message": "A new version of DeepWork is available with reliability improvements.",
     "updateUrl": "https://apps.apple.com/app/deepwork/id6748564027",
-    "lastUpdated": "2024-11-28T00:00:00Z"
+    "lastUpdated": "2026-04-28T00:00:00Z"
   }
+}
