@@ -1,228 +1,793 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>document.documentElement.classList.add('js');</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeepWork.io - Find Your Focus</title>
-    <meta property="og:title" content="DeepWork.io - Find Your Focus">
-    <meta property="og:description" content="The tool for finding your focus">
-    <meta property="og:image" content="https://deep-work.io/preview.png">
+    <title>Lucid — Reclaim Your Attention</title>
+    <meta name="description" content="Lucid is a focus system for your phone and computer. Start a session, block what pulls you away, and see the work you actually did.">
+    <link rel="canonical" href="https://deep-work.io/">
+
+    <meta property="og:title" content="Lucid — Reclaim Your Attention">
+    <meta property="og:description" content="A focus system for your phone and computer — start a session, block what pulls you away, and see the work you actually did.">
+    <meta property="og:image" content="https://deep-work.io/favicon.png">
     <meta property="og:url" content="https://deep-work.io">
     <meta property="og:type" content="website">
-    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lucid — Reclaim Your Attention">
+    <meta name="twitter:description" content="A focus system for your phone and computer — start a session, block what pulls you away, and see the work you actually did.">
+    <meta name="twitter:image" content="https://deep-work.io/favicon.png">
+
     <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #faf9f6;
+            --paper: #ffffff;
+            --gray: #f1efe9;
+            --ink: #15140f;
+            --ink-soft: rgba(21, 20, 15, 0.66);
+            --ink-faint: rgba(21, 20, 15, 0.4);
+            --line: rgba(21, 20, 15, 0.12);
+            --bg-dark: #0b0b09;
+            --paper-dark: #17160f;
+            --white-soft: rgba(250, 249, 246, 0.72);
+            --white-faint: rgba(250, 249, 246, 0.45);
+            --line-dark: rgba(250, 249, 246, 0.14);
+            --accent: #ff5a1f;
+
+            --font-serif: 'Iowan Old Style', 'Palatino Linotype', Georgia, 'Times New Roman', serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+
+            --section-pad: clamp(64px, 12vw, 140px);
+            --edge-pad: clamp(20px, 6vw, 64px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
         }
 
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #ffffff;
-            color: #000000;
-            min-height: 100vh;
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; }
+
+        img { display: block; max-width: 100%; }
+
+        .wrap {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding-left: var(--edge-pad);
+            padding-right: var(--edge-pad);
+        }
+
+        .eyebrow {
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.08;
+        }
+
+        h1 { font-size: clamp(40px, 7.5vw, 84px); }
+        h2 { font-size: clamp(30px, 5vw, 52px); }
+        h3 { font-size: clamp(20px, 2.4vw, 26px); }
+
+        p { color: var(--ink-soft); }
+
+        .lede {
+            font-size: clamp(17px, 2vw, 20px);
+            max-width: 46ch;
+            line-height: 1.6;
+        }
+
+        /* ---------- Header ---------- */
+
+        header.site {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(250, 249, 246, 0.86);
+            backdrop-filter: saturate(180%) blur(14px);
+            -webkit-backdrop-filter: saturate(180%) blur(14px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        header.site .wrap {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .wordmark {
+            font-family: var(--font-serif);
+            font-size: 21px;
+            letter-spacing: -0.01em;
+            text-decoration: none;
+        }
+
+        /* ---------- Buttons ---------- */
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-sans);
+            font-size: 15px;
+            font-weight: 600;
+            padding: 13px 26px;
+            border-radius: 100px;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .btn:active { transform: scale(0.97); }
+
+        .btn-primary {
+            background: var(--ink);
+            color: var(--bg);
+        }
+
+        .btn-primary:hover { background: #34322a; }
+
+        .btn-primary.on-dark {
+            background: var(--bg);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary.on-dark:hover { background: #e7e5de; }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--ink);
+            border-color: var(--line);
+        }
+
+        .btn-ghost:hover { border-color: var(--ink-faint); }
+
+        .btn-ghost.on-dark {
+            color: var(--bg);
+            border-color: var(--line-dark);
+        }
+
+        .btn-ghost.on-dark:hover { border-color: var(--white-soft); }
+
+        .btn-small {
+            padding: 9px 18px;
+            font-size: 13px;
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+        }
+
+        /* ---------- Sections generic ---------- */
+
+        section {
+            padding: var(--section-pad) 0;
+        }
+
+        section.dark {
+            background: var(--bg-dark);
+            color: var(--bg);
+        }
+
+        section.dark p { color: var(--white-soft); }
+        section.dark .eyebrow { color: var(--accent); }
+
+        section.gray { background: var(--gray); }
+
+        .section-head {
+            max-width: 640px;
+            margin-bottom: 56px;
+        }
+
+        .section-head.center {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        /* ---------- Reveal ---------- */
+
+        .reveal {
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        html.js .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        html.js .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---------- Hero ---------- */
+
+        .hero {
+            padding-top: clamp(56px, 10vw, 100px);
+            padding-bottom: clamp(40px, 8vw, 90px);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: clamp(32px, 6vw, 64px);
+            align-items: center;
+        }
+
+        .hero-copy .eyebrow { margin-bottom: 22px; }
+
+        .hero h1 { margin-bottom: 22px; }
+
+        .hero .lede { margin-bottom: 34px; }
+
+        .hero-visual {
+            display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
         }
 
-        main {
-            max-width: 600px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 400;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        .typewriter-container {
-            font-size: 18px;
-            font-weight: 400;
-            text-align: center;
-            letter-spacing: 0.5px;
-            min-height: 30px;
-        }
-
-        .typewriter-text {
-            display: inline-block;
-            transition: color 0.3s ease;
-        }
-
-        .color-green { color: #10b981; }
-        .color-red { color: #ef4444; }
-        .color-blue { color: #3b82f6; }
-        .color-purple { color: #a855f7; }
-        .color-orange { color: #f97316; }
-
-        .cursor {
-            display: inline-block;
-            width: 2px;
-            height: 18px;
-            background-color: #000000;
-            margin-left: 2px;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        .mockup-container {
+        .device-shell {
+            position: relative;
             width: 100%;
             max-width: 300px;
+            aspect-ratio: 9 / 18.5;
+            border-radius: 40px;
+            border: 1px solid var(--line);
+            background: linear-gradient(165deg, rgba(255, 90, 31, 0.14), rgba(21, 20, 15, 0.03));
+            box-shadow: 0 40px 80px -30px rgba(21, 20, 15, 0.28);
             display: flex;
+            align-items: center;
             justify-content: center;
         }
 
-        .mockup-container img {
-            width: 75%;
-            height: auto;
-            /* border-radius: 50px; */
-            display: block;
+        .device-shell .frame-label {
+            color: var(--ink-faint);
         }
 
-        .download-btn {
-            background-color: #000000;
-            color: #ffffff;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 18px;
-            padding: 12px 36px;
+        .device-shell .frame-tag {
+            color: var(--ink-faint);
+            border-color: var(--line);
+        }
+
+        /* ---------- Problem ---------- */
+
+        .problem-inner {
+            max-width: 760px;
+        }
+
+        .problem h2 { margin-bottom: 24px; }
+
+        .problem .lede { max-width: 56ch; font-size: clamp(17px, 2.1vw, 21px); }
+
+        /* ---------- Mechanism ---------- */
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .step .num {
+            font-family: var(--font-serif);
+            font-size: 15px;
+            color: var(--accent);
+            margin-bottom: 14px;
+            letter-spacing: 0.04em;
+        }
+
+        .step h3 { margin-bottom: 8px; }
+
+        .step p { font-size: 15px; }
+
+        /* ---------- Big feature (Focus Lock / Chrome) ---------- */
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(36px, 6vw, 80px);
+            align-items: center;
+        }
+
+        .feature-grid.reverse .feature-visual { order: 2; }
+        .feature-grid.reverse .feature-copy { order: 1; }
+
+        .feature-copy h2 { margin-bottom: 20px; }
+
+        .feature-copy .lede { margin-bottom: 22px; }
+
+        .feature-note {
+            font-size: 14px;
+            color: var(--ink-faint);
+            border-left: 2px solid var(--accent);
+            padding-left: 14px;
+            max-width: 40ch;
+        }
+
+        section.dark .feature-note { color: var(--white-faint); }
+
+        .feature-visual { display: flex; justify-content: center; }
+
+        /* placeholder screenshot frame */
+
+        .frame {
+            width: 100%;
+            max-width: 280px;
+            aspect-ratio: 9 / 18.5;
+            border-radius: 34px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--line-dark);
+        }
+
+        .frame.pair {
+            max-width: 340px;
+            aspect-ratio: auto;
+            height: 380px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 0;
             border: none;
-            cursor: pointer;
-            text-decoration: none;
-            border-radius: 50px;
-            display: inline-block;
-            transition: background-color 0.2s ease;
+            background: none;
+            overflow: visible;
         }
 
-        .download-btn:hover {
-            background-color: #333333;
+        .frame-phone {
+            width: 150px;
+            height: 100%;
+            border-radius: 30px;
+            border: 1px solid var(--line-dark);
+            background: linear-gradient(160deg, rgba(255,90,31,0.16), rgba(255,255,255,0.02));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            margin-right: -28px;
         }
 
-        @media (min-width: 768px) {
-            h1 {
-                font-size: 28px;
-            }
+        .frame-browser {
+            width: 260px;
+            height: 74%;
+            border-radius: 12px;
+            border: 1px solid var(--line-dark);
+            background: linear-gradient(160deg, rgba(255,90,31,0.1), rgba(255,255,255,0.02));
+            position: relative;
+            z-index: 1;
+        }
 
-            .typewriter-container {
-                font-size: 20px;
-            }
+        .frame-browser::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 22px;
+            border-bottom: 1px solid var(--line-dark);
+        }
 
-            .cursor {
-                height: 20px;
-            }
+        .frame-label {
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--white-faint);
+            text-align: center;
+            padding: 0 20px;
+        }
 
-            .mockup-container {
-                max-width: 350px;
-            }
+        .frame-tag {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--white-faint);
+            border: 1px solid var(--line-dark);
+            padding: 5px 10px;
+            border-radius: 100px;
+            white-space: nowrap;
+        }
 
-            .download-btn {
-                font-size: 20px;
-                padding: 18px 60px;
-            }
+        .frame.light {
+            border-color: var(--line);
+            background: linear-gradient(160deg, rgba(255,90,31,0.08), rgba(21,20,15,0.02));
+        }
+
+        .frame.light .frame-label { color: var(--ink-faint); }
+
+        .frame.light .frame-tag {
+            color: var(--ink-faint);
+            border-color: var(--line);
+        }
+
+        /* ---------- Activity (real screenshot) ---------- */
+
+        .activity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(36px, 6vw, 80px);
+            align-items: center;
+        }
+
+        .activity-visual .frame {
+            margin: 0 auto;
+        }
+
+        .caption {
+            font-size: 13px;
+            color: var(--ink-faint);
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- Feature list ---------- */
+
+        .feature-list {
+            list-style: none;
+            margin-top: 40px;
+            border-top: 1px solid var(--line);
+        }
+
+        .feature-list li {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 24px;
+            padding: 22px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .feature-list h3 { font-size: 18px; }
+
+        .feature-list p { font-size: 15px; margin: 0; }
+
+        /* ---------- Outcome ---------- */
+
+        .outcome {
+            text-align: center;
+        }
+
+        .outcome .wrap { max-width: 720px; }
+
+        .outcome h2 { margin-bottom: 20px; }
+
+        .outcome .lede { margin: 0 auto; text-align: center; }
+
+        /* ---------- Final CTA ---------- */
+
+        .final-cta {
+            text-align: center;
+        }
+
+        .final-cta h2 { margin-bottom: 16px; }
+
+        .final-cta p { margin-bottom: 34px; }
+
+        .final-cta .cta-row { justify-content: center; }
+
+        /* ---------- Footer ---------- */
+
+        footer.site {
+            background: var(--bg-dark);
+            color: var(--white-soft);
+            padding: 40px 0;
+            border-top: 1px solid var(--line-dark);
+        }
+
+        footer.site .wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        footer.site .wordmark { color: var(--bg); font-size: 17px; }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+            font-size: 14px;
+        }
+
+        .footer-links a { text-decoration: none; color: var(--white-soft); }
+        .footer-links a:hover { color: var(--bg); }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--white-faint);
+            width: 100%;
+            margin-top: 12px;
+            border-top: 1px solid var(--line-dark);
+            padding-top: 20px;
+        }
+
+        /* ---------- Responsive ---------- */
+
+        @media (max-width: 860px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .hero-visual { order: -1; }
+            .device-shell { max-width: 220px; }
+            .steps { grid-template-columns: repeat(2, 1fr); }
+            .feature-grid, .feature-grid.reverse { grid-template-columns: 1fr; }
+            .feature-grid .feature-visual, .feature-grid.reverse .feature-visual { order: -1; }
+            .feature-grid .feature-copy, .feature-grid.reverse .feature-copy { order: 0; }
+            .activity-grid { grid-template-columns: 1fr; }
+            .activity-visual { order: -1; }
+            .feature-list li { grid-template-columns: 1fr; gap: 8px; }
+        }
+
+        @media (max-width: 520px) {
+            .steps { grid-template-columns: 1fr; }
+            .btn { font-size: 14px; padding: 12px 22px; }
         }
     </style>
 </head>
 <body>
-    <main>
-        <h1>the tool for finding your focus</h1>
-        
-        <div class="typewriter-container">
-            <span>a tool for </span>
-            <span class="typewriter-text"></span>
-            <span class="cursor"></span>
+
+    <header class="site">
+        <div class="wrap">
+            <a href="#top" class="wordmark">Lucid</a>
+            <a href="https://apps.apple.com/us/app/lucid/id6748564027" class="btn btn-primary btn-small">Download</a>
         </div>
-        
-        <div class="mockup-container">
-            <img src="iphoneGifUpdated.gif" alt="DeepWork.io app interface showing activity tracking">
-        </div>
-        
-        <a href="https://apps.apple.com/us/app/deepwork-io/id6748564027" class="download-btn">
-            download now
-        </a>
+    </header>
+
+    <main id="top">
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="wrap hero-grid">
+                <div class="hero-copy reveal">
+                    <span class="eyebrow">Lucid</span>
+                    <h1>Reclaim your attention.</h1>
+                    <p class="lede">A focus system for your phone and your computer — start a session, block what pulls you away, and see the work you actually did.</p>
+                    <div class="cta-row">
+                        <a href="https://apps.apple.com/us/app/lucid/id6748564027" class="btn btn-primary">Download Lucid</a>
+                        <a href="#how-it-works" class="btn btn-ghost">See how it works</a>
+                    </div>
+                </div>
+                <div class="hero-visual reveal">
+                    <div class="device-shell">
+                        <span class="eyebrow" style="margin:0;">Lucid</span>
+                        <span class="frame-tag">Screenshot coming soon</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEM -->
+        <section class="dark">
+            <div class="wrap problem-inner reveal">
+                <span class="eyebrow">The problem</span>
+                <h2>You sat down to work. Then everything else showed up.</h2>
+                <p class="lede">A notification. A tab. A message that could wait. One by one, they take the hour you meant to spend on something that mattered.</p>
+            </div>
+        </section>
+
+        <!-- MECHANISM -->
+        <section id="how-it-works">
+            <div class="wrap">
+                <div class="section-head reveal">
+                    <span class="eyebrow">How Lucid works</span>
+                    <h2>Turn intention into a session.</h2>
+                </div>
+                <div class="steps">
+                    <div class="step reveal">
+                        <div class="num">01</div>
+                        <h3>Choose</h3>
+                        <p>Decide what you're focusing on, in your own words.</p>
+                    </div>
+                    <div class="step reveal">
+                        <div class="num">02</div>
+                        <h3>Start</h3>
+                        <p>Begin a deliberate, timed focus session.</p>
+                    </div>
+                    <div class="step reveal">
+                        <div class="num">03</div>
+                        <h3>Protect</h3>
+                        <p>Lucid blocks the apps competing for your attention.</p>
+                    </div>
+                    <div class="step reveal">
+                        <div class="num">04</div>
+                        <h3>Reflect</h3>
+                        <p>See what you got done, and how you focused.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOCUS LOCK -->
+        <section class="dark">
+            <div class="wrap feature-grid">
+                <div class="feature-copy reveal">
+                    <span class="eyebrow">Focus Lock</span>
+                    <h2>When willpower runs out, Lucid locks the door.</h2>
+                    <p class="lede">Focus Lock blocks the apps that pull you away for the length of your session — not a suggestion, a barrier. You choose what's off-limits. Lucid holds the line.</p>
+                    <p class="feature-note">This is what separates a focus session from a timer.</p>
+                </div>
+                <div class="feature-visual reveal">
+                    <div class="frame">
+                        <span class="frame-label">Focus Lock</span>
+                        <span class="frame-tag">Screenshot coming soon</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHROME / COMPUTER -->
+        <section>
+            <div class="wrap feature-grid reverse">
+                <div class="feature-copy reveal">
+                    <span class="eyebrow">On your computer, too</span>
+                    <h2>Your distractions don't stop at your phone. Neither does Lucid.</h2>
+                    <p class="lede">The Lucid Chrome extension carries your focus session into the browser, syncing automatically so one session protects both screens.</p>
+                </div>
+                <div class="feature-visual reveal">
+                    <div class="frame pair light">
+                        <div class="frame-browser">
+                            <span class="frame-label" style="margin-top:40px; display:block;">Chrome extension</span>
+                        </div>
+                        <div class="frame-phone">
+                            <span class="frame-label">iPhone</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACTIVITY -->
+        <section class="gray">
+            <div class="wrap activity-grid">
+                <div class="activity-visual reveal">
+                    <div class="frame light">
+                        <span class="frame-label">Activity history</span>
+                        <span class="frame-tag">Screenshot coming soon</span>
+                    </div>
+                    <p class="caption">Activity history</p>
+                </div>
+                <div class="reveal">
+                    <span class="eyebrow">Activity</span>
+                    <h2>See where your focused time actually goes.</h2>
+                    <p class="lede">Every session is logged automatically — what you worked on, how long it lasted, and how it adds up over time.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI INSIGHTS -->
+        <section>
+            <div class="wrap feature-grid">
+                <div class="feature-copy reveal">
+                    <span class="eyebrow">Insights</span>
+                    <h2>Understand your focus, not just track it.</h2>
+                    <p class="lede">Lucid surfaces patterns in your sessions over time — when you focus best, what tends to break your streaks, and what to change.</p>
+                </div>
+                <div class="feature-visual reveal">
+                    <div class="frame light">
+                        <span class="frame-label">AI Insights</span>
+                        <span class="frame-tag">Screenshot coming soon</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUPPORTING FEATURES -->
+        <section class="gray">
+            <div class="wrap">
+                <div class="section-head reveal">
+                    <span class="eyebrow">The rest of the system</span>
+                    <h2>Everything else that's part of it.</h2>
+                </div>
+                <ul class="feature-list reveal">
+                    <li>
+                        <h3>Custom activities</h3>
+                        <p>Define what you're focusing on, in your own words — not a fixed category list.</p>
+                    </li>
+                    <li>
+                        <h3>Background focus music</h3>
+                        <p>Audio built to support concentration during a session, not compete with it.</p>
+                    </li>
+                    <li>
+                        <h3>Completion alarms</h3>
+                        <p>A clear signal when a session ends, so you're not watching the clock.</p>
+                    </li>
+                    <li>
+                        <h3>Cross-device sync</h3>
+                        <p>Start a session on your phone and stay in sync on your computer.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- OUTCOME -->
+        <section class="dark outcome">
+            <div class="wrap reveal">
+                <span class="eyebrow">Why it matters</span>
+                <h2>Do the work. Then look up.</h2>
+                <p class="lede">Lucid isn't here to manage your productivity. It's here to get out of the way, so the hours you meant to spend on something that matters actually go there.</p>
+            </div>
+        </section>
+
+        <!-- FINAL CTA -->
+        <section class="dark final-cta">
+            <div class="wrap reveal">
+                <h2>Ready to focus?</h2>
+                <p>Take back your attention with Lucid.</p>
+                <div class="cta-row">
+                    <a href="https://apps.apple.com/us/app/lucid/id6748564027" class="btn btn-primary on-dark">Download Lucid</a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
+    <footer class="site">
+        <div class="wrap">
+            <a href="#top" class="wordmark">Lucid</a>
+            <ul class="footer-links">
+                <li><a href="privacy/privacy.html">Privacy</a></li>
+                <li><a href="terms/terms.html">Terms</a></li>
+                <li><a href="https://apps.apple.com/us/app/lucid/id6748564027">App Store</a></li>
+            </ul>
+            <div class="footer-copy">© 2026 Lucid. All rights reserved.</div>
+        </div>
+    </footer>
+
     <script>
-        const words = [
-            'coding',
-            'writing',
-            'designing',
-            'studying',
-            'reading',
-            'creating',
-            'building',
-            'learning',
-            'painting',
-            'composing',
-            'editing',
-            'researching',
-            'analyzing',
-            'planning',
-            'thinking',
-            'sketching',
-            'crafting'
-        ];
+        (function () {
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var revealEls = document.querySelectorAll('.reveal');
 
-        const colors = ['color-green', 'color-red', 'color-blue', 'color-purple', 'color-orange'];
-
-        let wordIndex = 0;
-        let colorIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        const typewriterElement = document.querySelector('.typewriter-text');
-        const typingSpeed = 200;
-        const deletingSpeed = 200;
-        const pauseBeforeDelete = 3000;
-        const pauseBeforeType = 500;
-
-        function typeWriter() {
-            const currentWord = words[wordIndex];
-            
-            if (isDeleting) {
-                typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typewriterElement.textContent = currentWord.substring(0, charIndex + 1);
-                charIndex++;
+            if (reduceMotion || !('IntersectionObserver' in window)) {
+                revealEls.forEach(function (el) { el.classList.add('in'); });
+                return;
             }
 
-            let timeout = isDeleting ? deletingSpeed : typingSpeed;
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
 
-            if (!isDeleting && charIndex === currentWord.length) {
-                timeout = pauseBeforeDelete;
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;
-                colorIndex = (colorIndex + 1) % colors.length;
-                
-                // Change color
-                typewriterElement.className = 'typewriter-text ' + colors[colorIndex];
-                
-                timeout = pauseBeforeType;
-            }
-
-            setTimeout(typeWriter, timeout);
-        }
-
-        // Set initial color and start
-        typewriterElement.className = 'typewriter-text ' + colors[colorIndex];
-        typeWriter();
+            revealEls.forEach(function (el) { observer.observe(el); });
+        })();
     </script>
+
 </body>
 </html>
-
-
