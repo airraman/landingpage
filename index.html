@@ -20,33 +20,38 @@
 
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
+    <meta name="theme-color" content="#0f0f0f">
 
     <style>
         :root {
-            --bg: #faf9f6;
-            --paper: #ffffff;
-            --gray: #f1efe9;
-            --ink: #15140f;
-            --ink-soft: rgba(21, 20, 15, 0.66);
-            --ink-faint: rgba(21, 20, 15, 0.4);
-            --line: rgba(21, 20, 15, 0.12);
-            --bg-dark: #0b0b09;
-            --paper-dark: #17160f;
-            --white-soft: rgba(250, 249, 246, 0.72);
-            --white-faint: rgba(250, 249, 246, 0.45);
-            --line-dark: rgba(250, 249, 246, 0.14);
-            --accent: #ff5a1f;
+            --bg: #0f0f0f;
+            --card: #111111;
+            --border: #1e1e1e;
+            --track: #1a1a1a;
+            --text: #f0f0f0;
+            --text-soft: rgba(240, 240, 240, 0.62);
+            --text-faint: rgba(240, 240, 240, 0.4);
+            --subtle: #555555;
+            --green: #4ade80;
+            --green-bg: #0d2b1a;
+            --danger: #ef4444;
+            --purple: #7c3aed;
+            --purple-bg: #1a0d2a;
 
-            --font-serif: 'Iowan Old Style', 'Palatino Linotype', Georgia, 'Times New Roman', serif;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            --radius-card: 14px;
+            --radius-btn: 9px;
+            --radius-chip: 7px;
 
-            --section-pad: clamp(64px, 12vw, 140px);
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
             --edge-pad: clamp(20px, 6vw, 64px);
+            --section-pad: clamp(64px, 11vw, 128px);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; background: var(--bg); }
 
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
@@ -54,16 +59,16 @@
         }
 
         body {
-            font-family: var(--font-sans);
+            font-family: var(--font);
             background: var(--bg);
-            color: var(--ink);
+            color: var(--text);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
         }
 
         a { color: inherit; }
-
-        img { display: block; max-width: 100%; }
+        img, svg { display: block; max-width: 100%; }
+        ul { list-style: none; }
 
         .wrap {
             max-width: 1120px;
@@ -73,32 +78,43 @@
         }
 
         .eyebrow {
-            font-size: 12px;
-            letter-spacing: 0.14em;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.65px;
             text-transform: uppercase;
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 18px;
+            color: var(--text-faint);
             display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .eyebrow .dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            margin-right: 7px;
+            vertical-align: middle;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.55);
         }
 
         h1, h2, h3 {
-            font-family: var(--font-serif);
-            font-weight: 400;
-            letter-spacing: -0.01em;
+            font-weight: 700;
+            letter-spacing: -1.5px;
             line-height: 1.08;
         }
 
-        h1 { font-size: clamp(40px, 7.5vw, 84px); }
-        h2 { font-size: clamp(30px, 5vw, 52px); }
-        h3 { font-size: clamp(20px, 2.4vw, 26px); }
+        h1 { font-size: clamp(38px, 6.6vw, 76px); letter-spacing: -2px; }
+        h2 { font-size: clamp(28px, 4.4vw, 44px); }
+        h3 { font-size: clamp(17px, 2vw, 20px); letter-spacing: -0.4px; }
 
-        p { color: var(--ink-soft); }
+        p { color: var(--text-soft); }
 
         .lede {
-            font-size: clamp(17px, 2vw, 20px);
+            font-size: clamp(16px, 1.8vw, 18px);
             max-width: 46ch;
             line-height: 1.6;
+            color: var(--text-soft);
         }
 
         /* ---------- Header ---------- */
@@ -107,10 +123,10 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            background: rgba(250, 249, 246, 0.86);
-            backdrop-filter: saturate(180%) blur(14px);
-            -webkit-backdrop-filter: saturate(180%) blur(14px);
-            border-bottom: 1px solid var(--line);
+            background: rgba(15, 15, 15, 0.82);
+            backdrop-filter: saturate(160%) blur(14px);
+            -webkit-backdrop-filter: saturate(160%) blur(14px);
+            border-bottom: 1px solid var(--border);
         }
 
         header.site .wrap {
@@ -122,10 +138,21 @@
         }
 
         .wordmark {
-            font-family: var(--font-serif);
-            font-size: 21px;
-            letter-spacing: -0.01em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
             text-decoration: none;
+        }
+
+        .wordmark .ring-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 10px rgba(74, 222, 128, 0.6);
         }
 
         /* ---------- Buttons ---------- */
@@ -134,183 +161,217 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-family: var(--font-sans);
-            font-size: 15px;
-            font-weight: 600;
-            padding: 13px 26px;
-            border-radius: 100px;
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 700;
+            padding: 12px 22px;
+            border-radius: var(--radius-btn);
             text-decoration: none;
             border: 1px solid transparent;
-            transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+            transition: transform 200ms var(--ease), background-color 200ms var(--ease), border-color 200ms var(--ease);
             white-space: nowrap;
         }
 
         .btn:active { transform: scale(0.97); }
 
         .btn-primary {
-            background: var(--ink);
-            color: var(--bg);
+            background: var(--green);
+            color: #06170d;
         }
 
-        .btn-primary:hover { background: #34322a; }
-
-        .btn-primary.on-dark {
-            background: var(--bg);
-            color: var(--bg-dark);
-        }
-
-        .btn-primary.on-dark:hover { background: #e7e5de; }
+        .btn-primary:hover { background: #6be89b; }
 
         .btn-ghost {
             background: transparent;
-            color: var(--ink);
-            border-color: var(--line);
+            color: var(--text);
+            border-color: var(--border);
         }
 
-        .btn-ghost:hover { border-color: var(--ink-faint); }
+        .btn-ghost:hover { border-color: var(--text-faint); }
 
-        .btn-ghost.on-dark {
-            color: var(--bg);
-            border-color: var(--line-dark);
-        }
-
-        .btn-ghost.on-dark:hover { border-color: var(--white-soft); }
-
-        .btn-small {
-            padding: 9px 18px;
-            font-size: 13px;
-        }
+        .btn-small { padding: 9px 16px; font-size: 13px; }
 
         .cta-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 14px;
+            gap: 12px;
             align-items: center;
         }
 
-        /* ---------- Sections generic ---------- */
+        /* ---------- Sections ---------- */
 
-        section {
-            padding: var(--section-pad) 0;
-        }
+        section { padding: var(--section-pad) 0; }
 
-        section.dark {
-            background: var(--bg-dark);
-            color: var(--bg);
-        }
+        section + section { border-top: 1px solid var(--border); }
 
-        section.dark p { color: var(--white-soft); }
-        section.dark .eyebrow { color: var(--accent); }
-
-        section.gray { background: var(--gray); }
-
-        .section-head {
-            max-width: 640px;
-            margin-bottom: 56px;
-        }
-
-        .section-head.center {
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-        }
+        .section-head { max-width: 620px; margin-bottom: 48px; }
+        .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
 
         /* ---------- Reveal ---------- */
 
-        .reveal {
-            transition: opacity 0.7s ease, transform 0.7s ease;
+        .reveal { transition: opacity 500ms var(--ease), transform 500ms var(--ease); }
+        html.js .reveal { opacity: 0; transform: translateY(16px); }
+        html.js .reveal.in { opacity: 1; transform: translateY(0); }
+
+        /* ---------- Card / frame ---------- */
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
         }
 
-        html.js .reveal {
-            opacity: 0;
-            transform: translateY(18px);
+        .frame {
+            width: 100%;
+            max-width: 260px;
+            aspect-ratio: 9 / 18.5;
+            border-radius: 26px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        html.js .reveal.in {
-            opacity: 1;
-            transform: translateY(0);
+        .frame-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-faint);
+        }
+
+        .frame-tag {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: var(--text-faint);
+            border: 1px solid var(--border);
+            padding: 5px 10px;
+            border-radius: var(--radius-chip);
+            position: absolute;
+            bottom: 16px;
+        }
+
+        /* ---------- Focus ring ---------- */
+
+        .ring-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
+
+        .ring-wrap svg { transform: rotate(-90deg); }
+
+        .ring-track { stroke: var(--track); fill: none; }
+
+        .ring-progress {
+            stroke: var(--green);
+            fill: none;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1000ms linear;
         }
 
         /* ---------- Hero ---------- */
 
-        .hero {
-            padding-top: clamp(56px, 10vw, 100px);
-            padding-bottom: clamp(40px, 8vw, 90px);
-        }
+        .hero { padding-top: clamp(48px, 9vw, 88px); }
 
         .hero-grid {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-columns: 1.05fr 0.95fr;
             gap: clamp(32px, 6vw, 64px);
             align-items: center;
         }
 
-        .hero-copy .eyebrow { margin-bottom: 22px; }
+        .hero h1 { margin-bottom: 20px; }
+        .hero .lede { margin-bottom: 32px; }
 
-        .hero h1 { margin-bottom: 22px; }
+        .hero-visual { display: flex; justify-content: center; }
 
-        .hero .lede { margin-bottom: 34px; }
+        .hero-ring-frame { position: relative; width: 100%; max-width: 300px; display: flex; align-items: center; justify-content: center; }
 
-        .hero-visual {
-            display: flex;
-            justify-content: center;
-        }
+        .hero-ring-frame .ring-wrap { position: absolute; width: 100%; height: 100%; }
 
-        .device-shell {
+        .hero-ring-frame .frame { max-width: 220px; z-index: 2; background: var(--card); border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.4); }
+
+        /* ---------- Problem / distraction chips ---------- */
+
+        .distraction-field {
             position: relative;
-            width: 100%;
-            max-width: 300px;
-            aspect-ratio: 9 / 18.5;
-            border-radius: 40px;
-            border: 1px solid var(--line);
-            background: linear-gradient(165deg, rgba(255, 90, 31, 0.14), rgba(21, 20, 15, 0.03));
-            box-shadow: 0 40px 80px -30px rgba(21, 20, 15, 0.28);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 260px;
+            max-width: 560px;
+            margin: 40px auto 0;
         }
 
-        .device-shell .frame-label {
-            color: var(--ink-faint);
+        .d-center {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            border: 2px solid var(--subtle);
+            transform: translate(-50%, -50%);
         }
 
-        .device-shell .frame-tag {
-            color: var(--ink-faint);
-            border-color: var(--line);
+        .d-chip {
+            position: absolute;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-soft);
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-chip);
+            padding: 7px 12px;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.85);
+            transition: opacity 500ms var(--ease), transform 500ms var(--ease);
+            transition-delay: var(--d, 0ms);
         }
 
-        /* ---------- Problem ---------- */
-
-        .problem-inner {
-            max-width: 760px;
-        }
-
-        .problem h2 { margin-bottom: 24px; }
-
-        .problem .lede { max-width: 56ch; font-size: clamp(17px, 2.1vw, 21px); }
+        html.js .distraction-field.in .d-chip { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
         /* ---------- Mechanism ---------- */
 
         .steps {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
+            gap: 0;
             margin-top: 48px;
+            position: relative;
         }
 
-        .step .num {
-            font-family: var(--font-serif);
-            font-size: 15px;
-            color: var(--accent);
-            margin-bottom: 14px;
-            letter-spacing: 0.04em;
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 11px;
+            left: 5.5%;
+            right: 5.5%;
+            height: 1px;
+            background: var(--border);
         }
 
-        .step h3 { margin-bottom: 8px; }
+        .step { position: relative; padding-right: 20px; }
 
-        .step p { font-size: 15px; }
+        .step .dot {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700; color: var(--text-faint);
+            margin-bottom: 18px;
+            position: relative; z-index: 1;
+            transition: border-color 350ms var(--ease), color 350ms var(--ease), box-shadow 350ms var(--ease);
+        }
 
-        /* ---------- Big feature (Focus Lock / Chrome) ---------- */
+        html.js .step.in .dot {
+            border-color: var(--green);
+            color: var(--green);
+            box-shadow: 0 0 12px rgba(74, 222, 128, 0.35);
+        }
+
+        .step h3 { margin-bottom: 6px; }
+        .step p { font-size: 14px; }
+
+        /* ---------- Feature grid (Focus Lock / Insights) ---------- */
 
         .feature-grid {
             display: grid;
@@ -322,218 +383,226 @@
         .feature-grid.reverse .feature-visual { order: 2; }
         .feature-grid.reverse .feature-copy { order: 1; }
 
-        .feature-copy h2 { margin-bottom: 20px; }
-
-        .feature-copy .lede { margin-bottom: 22px; }
+        .feature-copy h2 { margin-bottom: 18px; }
+        .feature-copy .lede { margin-bottom: 20px; }
 
         .feature-note {
-            font-size: 14px;
-            color: var(--ink-faint);
-            border-left: 2px solid var(--accent);
-            padding-left: 14px;
-            max-width: 40ch;
+            font-size: 13px;
+            color: var(--text-faint);
+            border-left: 2px solid var(--green);
+            padding-left: 13px;
+            max-width: 38ch;
         }
-
-        section.dark .feature-note { color: var(--white-faint); }
 
         .feature-visual { display: flex; justify-content: center; }
 
-        /* placeholder screenshot frame */
+        /* ---------- Focus Lock cluster ---------- */
 
-        .frame {
+        .lock-cluster {
+            position: relative;
             width: 100%;
             max-width: 280px;
-            aspect-ratio: 9 / 18.5;
-            border-radius: 34px;
+            aspect-ratio: 1;
+            display: grid;
+            place-items: center;
+        }
+
+        .lock-chip {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 7px 11px;
+            border-radius: var(--radius-chip);
+            border: 1px solid var(--border);
+            color: var(--text-soft);
+            background: var(--card);
+            transition: opacity 500ms var(--ease), filter 500ms var(--ease);
+            transition-delay: var(--d, 0ms);
+        }
+
+        html.js .lock-cluster.in .lock-chip { opacity: 0.32; filter: grayscale(1); }
+
+        .lock-center {
             position: relative;
-            overflow: hidden;
+            z-index: 2;
+            padding: 14px 22px;
+            border-radius: var(--radius-chip);
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text-faint);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            transition: border-color 500ms var(--ease), color 500ms var(--ease), background 500ms var(--ease), box-shadow 500ms var(--ease);
+        }
+
+        html.js .lock-cluster.in .lock-center {
+            border-color: var(--green);
+            color: var(--green);
+            background: var(--green-bg);
+            box-shadow: 0 0 24px rgba(74, 222, 128, 0.25);
+        }
+
+        /* ---------- Computer / cross-device ---------- */
+
+        .connect-visual {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--line-dark);
+            gap: 28px;
+            width: 100%;
+            max-width: 340px;
         }
 
-        .frame.pair {
-            max-width: 340px;
-            aspect-ratio: auto;
-            height: 380px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 0;
-            border: none;
-            background: none;
+        .connect-card {
+            padding: 20px 16px;
+            min-width: 108px;
+            text-align: center;
+            transition: border-color 500ms var(--ease), box-shadow 500ms var(--ease);
+        }
+
+        .connect-card .frame-label { color: var(--text-faint); }
+
+        html.js .connect-visual.in .connect-card {
+            border-color: var(--purple);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.22);
+        }
+
+        .connect-line {
+            position: relative;
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            max-width: 60px;
             overflow: visible;
         }
 
-        .frame-phone {
-            width: 150px;
-            height: 100%;
-            border-radius: 30px;
-            border: 1px solid var(--line-dark);
-            background: linear-gradient(160deg, rgba(255,90,31,0.16), rgba(255,255,255,0.02));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-            margin-right: -28px;
-        }
-
-        .frame-browser {
-            width: 260px;
-            height: 74%;
-            border-radius: 12px;
-            border: 1px solid var(--line-dark);
-            background: linear-gradient(160deg, rgba(255,90,31,0.1), rgba(255,255,255,0.02));
-            position: relative;
-            z-index: 1;
-        }
-
-        .frame-browser::before {
-            content: '';
+        .connect-dot {
             position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 22px;
-            border-bottom: 1px solid var(--line-dark);
+            top: 50%; left: 0;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--purple);
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.7);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: left 700ms var(--ease), opacity 300ms var(--ease);
         }
 
-        .frame-label {
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--white-faint);
-            text-align: center;
-            padding: 0 20px;
-        }
+        html.js .connect-visual.in .connect-dot { left: 100%; opacity: 1; }
 
-        .frame-tag {
-            position: absolute;
-            bottom: 18px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 10px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--white-faint);
-            border: 1px solid var(--line-dark);
-            padding: 5px 10px;
-            border-radius: 100px;
-            white-space: nowrap;
-        }
-
-        .frame.light {
-            border-color: var(--line);
-            background: linear-gradient(160deg, rgba(255,90,31,0.08), rgba(21,20,15,0.02));
-        }
-
-        .frame.light .frame-label { color: var(--ink-faint); }
-
-        .frame.light .frame-tag {
-            color: var(--ink-faint);
-            border-color: var(--line);
-        }
-
-        /* ---------- Activity (real screenshot) ---------- */
+        /* ---------- Activity / live metrics ---------- */
 
         .activity-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.1fr 0.9fr;
             gap: clamp(36px, 6vw, 80px);
             align-items: center;
         }
 
-        .activity-visual .frame {
-            margin: 0 auto;
+        .metrics-row {
+            display: flex;
+            gap: clamp(24px, 4vw, 44px);
+            margin-top: 32px;
+            flex-wrap: wrap;
         }
 
-        .caption {
-            font-size: 13px;
-            color: var(--ink-faint);
-            margin-top: 14px;
-            text-align: center;
+        .metric .num {
+            font-size: clamp(28px, 3.4vw, 38px);
+            font-weight: 700;
+            letter-spacing: -2px;
+            color: var(--text);
         }
+
+        .metric .label {
+            font-size: 12px;
+            color: var(--text-faint);
+            margin-top: 4px;
+        }
+
+        /* ---------- Insight card ---------- */
+
+        .insight-card {
+            padding: 20px 22px;
+            max-width: 320px;
+        }
+
+        .insight-card .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 12px;
+        }
+
+        .insight-card .tag .dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.55);
+        }
+
+        .insight-card p { color: var(--text); font-size: 15px; line-height: 1.5; margin: 0; }
 
         /* ---------- Feature list ---------- */
 
-        .feature-list {
-            list-style: none;
-            margin-top: 40px;
-            border-top: 1px solid var(--line);
-        }
+        .feature-list { margin-top: 36px; border-top: 1px solid var(--border); }
 
         .feature-list li {
             display: grid;
-            grid-template-columns: 220px 1fr;
+            grid-template-columns: 200px 1fr;
             gap: 24px;
-            padding: 22px 0;
-            border-bottom: 1px solid var(--line);
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
         }
 
-        .feature-list h3 { font-size: 18px; }
-
-        .feature-list p { font-size: 15px; margin: 0; }
+        .feature-list h3 { font-size: 16px; letter-spacing: -0.3px; }
+        .feature-list p { font-size: 14px; margin: 0; }
 
         /* ---------- Outcome ---------- */
 
-        .outcome {
-            text-align: center;
-        }
-
-        .outcome .wrap { max-width: 720px; }
-
-        .outcome h2 { margin-bottom: 20px; }
-
+        .outcome { text-align: center; padding: clamp(88px, 14vw, 160px) 0; }
+        .outcome .wrap { max-width: 680px; }
+        .outcome h2 { margin-bottom: 18px; }
         .outcome .lede { margin: 0 auto; text-align: center; }
 
         /* ---------- Final CTA ---------- */
 
-        .final-cta {
-            text-align: center;
-        }
+        .final-cta { text-align: center; }
+        .final-cta .wrap { display: flex; flex-direction: column; align-items: center; }
+        .final-cta h2 { margin-bottom: 14px; }
+        .final-cta p { margin-bottom: 30px; }
 
-        .final-cta h2 { margin-bottom: 16px; }
-
-        .final-cta p { margin-bottom: 34px; }
-
-        .final-cta .cta-row { justify-content: center; }
+        .final-ring { width: 64px; height: 64px; margin-bottom: 28px; }
 
         /* ---------- Footer ---------- */
 
-        footer.site {
-            background: var(--bg-dark);
-            color: var(--white-soft);
-            padding: 40px 0;
-            border-top: 1px solid var(--line-dark);
-        }
+        footer.site { padding: 36px 0; }
 
         footer.site .wrap {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 18px;
             align-items: center;
             justify-content: space-between;
         }
 
-        footer.site .wordmark { color: var(--bg); font-size: 17px; }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-            list-style: none;
-            font-size: 14px;
-        }
-
-        .footer-links a { text-decoration: none; color: var(--white-soft); }
-        .footer-links a:hover { color: var(--bg); }
+        .footer-links { display: flex; gap: 22px; font-size: 13px; }
+        .footer-links a { text-decoration: none; color: var(--text-faint); }
+        .footer-links a:hover { color: var(--text); }
 
         .footer-copy {
-            font-size: 13px;
-            color: var(--white-faint);
+            font-size: 12px;
+            color: var(--text-faint);
             width: 100%;
-            margin-top: 12px;
-            border-top: 1px solid var(--line-dark);
-            padding-top: 20px;
+            margin-top: 8px;
+            border-top: 1px solid var(--border);
+            padding-top: 18px;
         }
 
         /* ---------- Responsive ---------- */
@@ -541,19 +610,20 @@
         @media (max-width: 860px) {
             .hero-grid { grid-template-columns: 1fr; }
             .hero-visual { order: -1; }
-            .device-shell { max-width: 220px; }
-            .steps { grid-template-columns: repeat(2, 1fr); }
+            .hero-ring-frame { max-width: 220px; }
+            .steps { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+            .steps::before { display: none; }
             .feature-grid, .feature-grid.reverse { grid-template-columns: 1fr; }
             .feature-grid .feature-visual, .feature-grid.reverse .feature-visual { order: -1; }
             .feature-grid .feature-copy, .feature-grid.reverse .feature-copy { order: 0; }
             .activity-grid { grid-template-columns: 1fr; }
             .activity-visual { order: -1; }
-            .feature-list li { grid-template-columns: 1fr; gap: 8px; }
+            .feature-list li { grid-template-columns: 1fr; gap: 6px; }
         }
 
         @media (max-width: 520px) {
             .steps { grid-template-columns: 1fr; }
-            .btn { font-size: 14px; padding: 12px 22px; }
+            .metrics-row { gap: 28px; }
         }
     </style>
 </head>
@@ -561,7 +631,7 @@
 
     <header class="site">
         <div class="wrap">
-            <a href="#top" class="wordmark">Lucid</a>
+            <a href="#top" class="wordmark"><span class="ring-dot"></span>Lucid</a>
             <a href="https://apps.apple.com/us/app/lucid/id6748564027" class="btn btn-primary btn-small">Download</a>
         </div>
     </header>
@@ -572,7 +642,7 @@
         <section class="hero">
             <div class="wrap hero-grid">
                 <div class="hero-copy reveal">
-                    <span class="eyebrow">Lucid</span>
+                    <span class="eyebrow"><span class="dot"></span>Lucid</span>
                     <h1>Reclaim your attention.</h1>
                     <p class="lede">A focus system for your phone and your computer — start a session, block what pulls you away, and see the work you actually did.</p>
                     <div class="cta-row">
@@ -581,20 +651,40 @@
                     </div>
                 </div>
                 <div class="hero-visual reveal">
-                    <div class="device-shell">
-                        <span class="eyebrow" style="margin:0;">Lucid</span>
-                        <span class="frame-tag">Screenshot coming soon</span>
+                    <div class="hero-ring-frame">
+                        <div class="ring-wrap" id="hero-ring">
+                            <svg width="300" height="300" viewBox="0 0 120 120">
+                                <circle class="ring-track" cx="60" cy="60" r="54" stroke-width="3"></circle>
+                                <circle class="ring-progress" cx="60" cy="60" r="54" stroke-width="3" stroke-dasharray="339.29" stroke-dashoffset="339.29"></circle>
+                            </svg>
+                        </div>
+                        <div class="frame">
+                            <span class="frame-label">Lucid</span>
+                            <span class="frame-tag">Screenshot coming soon</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- PROBLEM -->
-        <section class="dark">
-            <div class="wrap problem-inner reveal">
-                <span class="eyebrow">The problem</span>
-                <h2>You sat down to work. Then everything else showed up.</h2>
-                <p class="lede">A notification. A tab. A message that could wait. One by one, they take the hour you meant to spend on something that mattered.</p>
+        <section>
+            <div class="wrap">
+                <div class="section-head center reveal" style="margin-bottom:0;">
+                    <span class="eyebrow">The problem</span>
+                    <h2>Your attention is constantly being pulled somewhere else.</h2>
+                    <p class="lede" style="margin:16px auto 0; text-align:center;">You sit down intending to work. Then a notification, a tab, a message, or an impulse pulls you somewhere else.</p>
+                </div>
+                <div class="distraction-field reveal" id="distraction-field">
+                    <div class="d-center"></div>
+                    <div class="d-chip" style="top:14%; left:50%; --d:0ms;">Message</div>
+                    <div class="d-chip" style="top:30%; left:18%; --d:60ms;">New tab</div>
+                    <div class="d-chip" style="top:30%; left:82%; --d:120ms;">Notification</div>
+                    <div class="d-chip" style="top:62%; left:12%; --d:180ms;">Email</div>
+                    <div class="d-chip" style="top:62%; left:88%; --d:240ms;">Social</div>
+                    <div class="d-chip" style="top:86%; left:34%; --d:300ms;">Breaking news</div>
+                    <div class="d-chip" style="top:86%; left:66%; --d:360ms;">Group chat</div>
+                </div>
             </div>
         </section>
 
@@ -607,22 +697,22 @@
                 </div>
                 <div class="steps">
                     <div class="step reveal">
-                        <div class="num">01</div>
+                        <div class="dot">01</div>
                         <h3>Choose</h3>
                         <p>Decide what you're focusing on, in your own words.</p>
                     </div>
                     <div class="step reveal">
-                        <div class="num">02</div>
+                        <div class="dot">02</div>
                         <h3>Start</h3>
                         <p>Begin a deliberate, timed focus session.</p>
                     </div>
                     <div class="step reveal">
-                        <div class="num">03</div>
+                        <div class="dot">03</div>
                         <h3>Protect</h3>
                         <p>Lucid blocks the apps competing for your attention.</p>
                     </div>
                     <div class="step reveal">
-                        <div class="num">04</div>
+                        <div class="dot">04</div>
                         <h3>Reflect</h3>
                         <p>See what you got done, and how you focused.</p>
                     </div>
@@ -631,18 +721,23 @@
         </section>
 
         <!-- FOCUS LOCK -->
-        <section class="dark">
+        <section>
             <div class="wrap feature-grid">
                 <div class="feature-copy reveal">
-                    <span class="eyebrow">Focus Lock</span>
-                    <h2>When willpower runs out, Lucid locks the door.</h2>
+                    <span class="eyebrow"><span class="dot"></span>Focus Lock</span>
+                    <h2>When willpower isn't enough.</h2>
                     <p class="lede">Focus Lock blocks the apps that pull you away for the length of your session — not a suggestion, a barrier. You choose what's off-limits. Lucid holds the line.</p>
                     <p class="feature-note">This is what separates a focus session from a timer.</p>
                 </div>
                 <div class="feature-visual reveal">
-                    <div class="frame">
-                        <span class="frame-label">Focus Lock</span>
-                        <span class="frame-tag">Screenshot coming soon</span>
+                    <div class="lock-cluster" id="lock-cluster">
+                        <div class="lock-chip" style="top:6%; left:50%; transform:translate(-50%,-50%); --d:0ms;">Instagram</div>
+                        <div class="lock-chip" style="top:26%; left:12%; --d:60ms;">X</div>
+                        <div class="lock-chip" style="top:26%; left:88%; transform:translateX(-100%); --d:120ms;">YouTube</div>
+                        <div class="lock-chip" style="top:74%; left:12%; --d:180ms;">TikTok</div>
+                        <div class="lock-chip" style="top:74%; left:88%; transform:translateX(-100%); --d:240ms;">Reddit</div>
+                        <div class="lock-chip" style="top:94%; left:50%; transform:translate(-50%,-100%); --d:300ms;">News</div>
+                        <div class="lock-center">Active session</div>
                     </div>
                 </div>
             </div>
@@ -652,17 +747,18 @@
         <section>
             <div class="wrap feature-grid reverse">
                 <div class="feature-copy reveal">
-                    <span class="eyebrow">On your computer, too</span>
+                    <span class="eyebrow" style="color: var(--purple);"><span class="dot" style="background: var(--purple); box-shadow:0 0 8px rgba(124,58,237,.55);"></span>On your computer, too</span>
                     <h2>Your distractions don't stop at your phone. Neither does Lucid.</h2>
                     <p class="lede">The Lucid Chrome extension carries your focus session into the browser, syncing automatically so one session protects both screens.</p>
                 </div>
                 <div class="feature-visual reveal">
-                    <div class="frame pair light">
-                        <div class="frame-browser">
-                            <span class="frame-label" style="margin-top:40px; display:block;">Chrome extension</span>
-                        </div>
-                        <div class="frame-phone">
+                    <div class="connect-visual" id="connect-visual">
+                        <div class="card connect-card">
                             <span class="frame-label">iPhone</span>
+                        </div>
+                        <div class="connect-line"><span class="connect-dot"></span></div>
+                        <div class="card connect-card">
+                            <span class="frame-label">Chrome</span>
                         </div>
                     </div>
                 </div>
@@ -670,19 +766,23 @@
         </section>
 
         <!-- ACTIVITY -->
-        <section class="gray">
+        <section>
             <div class="wrap activity-grid">
-                <div class="activity-visual reveal">
-                    <div class="frame light">
-                        <span class="frame-label">Activity history</span>
-                        <span class="frame-tag">Screenshot coming soon</span>
-                    </div>
-                    <p class="caption">Activity history</p>
-                </div>
                 <div class="reveal">
                     <span class="eyebrow">Activity</span>
                     <h2>See where your focused time actually goes.</h2>
-                    <p class="lede">Every session is logged automatically — what you worked on, how long it lasted, and how it adds up over time.</p>
+                    <p class="lede">Every session is logged automatically — what you worked on, how long it lasted, and how it adds up.</p>
+                    <div class="metrics-row" id="metrics-row">
+                        <div class="metric"><div class="num" data-target="25" data-suffix=" min">0</div><div class="label">Last session</div></div>
+                        <div class="metric"><div class="num" data-target="5" data-suffix="">0</div><div class="label">Sessions today</div></div>
+                        <div class="metric"><div class="num" data-target="3.2" data-suffix=" hrs" data-decimal="1">0</div><div class="label">Focused this week</div></div>
+                    </div>
+                </div>
+                <div class="activity-visual reveal">
+                    <div class="frame card">
+                        <span class="frame-label">Activity history</span>
+                        <span class="frame-tag">Screenshot coming soon</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -694,9 +794,13 @@
                     <span class="eyebrow">Insights</span>
                     <h2>Understand your focus, not just track it.</h2>
                     <p class="lede">Lucid surfaces patterns in your sessions over time — when you focus best, what tends to break your streaks, and what to change.</p>
+                    <div class="card insight-card reveal">
+                        <span class="tag"><span class="dot"></span>Insight</span>
+                        <p>You focus best in 25–30 minute blocks before 11am.</p>
+                    </div>
                 </div>
                 <div class="feature-visual reveal">
-                    <div class="frame light">
+                    <div class="frame card">
                         <span class="frame-label">AI Insights</span>
                         <span class="frame-tag">Screenshot coming soon</span>
                     </div>
@@ -705,7 +809,7 @@
         </section>
 
         <!-- SUPPORTING FEATURES -->
-        <section class="gray">
+        <section>
             <div class="wrap">
                 <div class="section-head reveal">
                     <span class="eyebrow">The rest of the system</span>
@@ -733,7 +837,7 @@
         </section>
 
         <!-- OUTCOME -->
-        <section class="dark outcome">
+        <section class="outcome">
             <div class="wrap reveal">
                 <span class="eyebrow">Why it matters</span>
                 <h2>Do the work. Then look up.</h2>
@@ -742,12 +846,18 @@
         </section>
 
         <!-- FINAL CTA -->
-        <section class="dark final-cta">
-            <div class="wrap reveal">
+        <section class="final-cta">
+            <div class="wrap reveal" id="final-cta">
+                <div class="ring-wrap final-ring">
+                    <svg width="64" height="64" viewBox="0 0 120 120">
+                        <circle class="ring-track" cx="60" cy="60" r="54" stroke-width="4"></circle>
+                        <circle class="ring-progress" cx="60" cy="60" r="54" stroke-width="4" stroke-dasharray="339.29" stroke-dashoffset="339.29"></circle>
+                    </svg>
+                </div>
                 <h2>Ready to focus?</h2>
                 <p>Take back your attention with Lucid.</p>
                 <div class="cta-row">
-                    <a href="https://apps.apple.com/us/app/lucid/id6748564027" class="btn btn-primary on-dark">Download Lucid</a>
+                    <a href="https://apps.apple.com/us/app/lucid/id6748564027" class="btn btn-primary">Download Lucid</a>
                 </div>
             </div>
         </section>
@@ -756,7 +866,7 @@
 
     <footer class="site">
         <div class="wrap">
-            <a href="#top" class="wordmark">Lucid</a>
+            <a href="#top" class="wordmark"><span class="ring-dot"></span>Lucid</a>
             <ul class="footer-links">
                 <li><a href="privacy/privacy.html">Privacy</a></li>
                 <li><a href="terms/terms.html">Terms</a></li>
@@ -769,10 +879,38 @@
     <script>
         (function () {
             var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function countUp(el) {
+                var target = parseFloat(el.getAttribute('data-target'));
+                var suffix = el.getAttribute('data-suffix') || '';
+                var decimals = parseInt(el.getAttribute('data-decimal') || '0', 10);
+                if (reduceMotion) {
+                    el.textContent = target.toFixed(decimals) + suffix;
+                    return;
+                }
+                var start = null;
+                var duration = 900;
+                function step(ts) {
+                    if (!start) start = ts;
+                    var progress = Math.min((ts - start) / duration, 1);
+                    var eased = 1 - Math.pow(1 - progress, 3);
+                    var value = target * eased;
+                    el.textContent = value.toFixed(decimals) + suffix;
+                    if (progress < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            }
+
             var revealEls = document.querySelectorAll('.reveal');
 
             if (reduceMotion || !('IntersectionObserver' in window)) {
                 revealEls.forEach(function (el) { el.classList.add('in'); });
+                document.querySelectorAll('#distraction-field, #lock-cluster, #connect-visual').forEach(function (el) { el.classList.add('in'); });
+                document.querySelectorAll('#metrics-row .num').forEach(countUp);
+                var heroRingStatic = document.querySelector('#hero-ring .ring-progress');
+                if (heroRingStatic) heroRingStatic.style.strokeDashoffset = 95;
+                var finalRingStatic = document.querySelector('.final-ring .ring-progress');
+                if (finalRingStatic) finalRingStatic.style.strokeDashoffset = 95;
                 return;
             }
 
@@ -783,9 +921,57 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+            }, { threshold: 0.3, rootMargin: '0px 0px -60px 0px' });
 
             revealEls.forEach(function (el) { observer.observe(el); });
+
+            ['distraction-field', 'lock-cluster', 'connect-visual'].forEach(function (id) {
+                var el = document.getElementById(id);
+                if (!el) return;
+                var obs = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('in');
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.35 });
+                obs.observe(el);
+            });
+
+            var metricsEl = document.getElementById('metrics-row');
+            if (metricsEl) {
+                var metricsObs = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.querySelectorAll('.num').forEach(countUp);
+                            metricsObs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.4 });
+                metricsObs.observe(metricsEl);
+            }
+
+            requestAnimationFrame(function () {
+                setTimeout(function () {
+                    var heroRing = document.querySelector('#hero-ring .ring-progress');
+                    if (heroRing) heroRing.style.strokeDashoffset = 95;
+                }, 300);
+            });
+
+            var finalCtaEl = document.getElementById('final-cta');
+            if (finalCtaEl) {
+                var finalObs = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            var ring = entry.target.querySelector('.final-ring .ring-progress');
+                            if (ring) ring.style.strokeDashoffset = 95;
+                            finalObs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                finalObs.observe(finalCtaEl);
+            }
         })();
     </script>
 
