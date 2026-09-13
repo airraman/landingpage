@@ -221,41 +221,6 @@
             border-radius: var(--radius-card);
         }
 
-        .frame {
-            width: 100%;
-            max-width: 260px;
-            aspect-ratio: 9 / 18.5;
-            border-radius: 26px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .frame-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            color: var(--text-faint);
-        }
-
-        .frame-tag {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-            text-transform: uppercase;
-            color: var(--text-faint);
-            border: 1px solid var(--border);
-            padding: 5px 10px;
-            border-radius: var(--radius-chip);
-            position: absolute;
-            bottom: 16px;
-        }
-
         /* ---------- Focus ring ---------- */
 
         .ring-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
@@ -291,7 +256,15 @@
 
         .hero-ring-frame .ring-wrap { position: absolute; width: 100%; height: 100%; }
 
-        .hero-ring-frame .frame { max-width: 220px; z-index: 2; background: var(--card); border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.4); }
+        .shot {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.4);
+        }
+
+        .hero-ring-frame .shot { max-width: 230px; z-index: 2; position: relative; }
 
         /* ---------- Problem / distraction chips ---------- */
 
@@ -395,103 +368,6 @@
         }
 
         .feature-visual { display: flex; justify-content: center; }
-
-        /* ---------- Focus Lock cluster ---------- */
-
-        .lock-cluster {
-            position: relative;
-            width: 100%;
-            max-width: 280px;
-            aspect-ratio: 1;
-            display: grid;
-            place-items: center;
-        }
-
-        .lock-chip {
-            position: absolute;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 7px 11px;
-            border-radius: var(--radius-chip);
-            border: 1px solid var(--border);
-            color: var(--text-soft);
-            background: var(--card);
-            transition: opacity 500ms var(--ease), filter 500ms var(--ease);
-            transition-delay: var(--d, 0ms);
-        }
-
-        html.js .lock-cluster.in .lock-chip { opacity: 0.32; filter: grayscale(1); }
-
-        .lock-center {
-            position: relative;
-            z-index: 2;
-            padding: 14px 22px;
-            border-radius: var(--radius-chip);
-            border: 1px solid var(--border);
-            background: var(--card);
-            color: var(--text-faint);
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            transition: border-color 500ms var(--ease), color 500ms var(--ease), background 500ms var(--ease), box-shadow 500ms var(--ease);
-        }
-
-        html.js .lock-cluster.in .lock-center {
-            border-color: var(--green);
-            color: var(--green);
-            background: var(--green-bg);
-            box-shadow: 0 0 24px rgba(74, 222, 128, 0.25);
-        }
-
-        /* ---------- Computer / cross-device ---------- */
-
-        .connect-visual {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 28px;
-            width: 100%;
-            max-width: 340px;
-        }
-
-        .connect-card {
-            padding: 20px 16px;
-            min-width: 108px;
-            text-align: center;
-            transition: border-color 500ms var(--ease), box-shadow 500ms var(--ease);
-        }
-
-        .connect-card .frame-label { color: var(--text-faint); }
-
-        html.js .connect-visual.in .connect-card {
-            border-color: var(--purple);
-            box-shadow: 0 0 20px rgba(124, 58, 237, 0.22);
-        }
-
-        .connect-line {
-            position: relative;
-            flex: 1;
-            height: 2px;
-            background: var(--border);
-            max-width: 60px;
-            overflow: visible;
-        }
-
-        .connect-dot {
-            position: absolute;
-            top: 50%; left: 0;
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--purple);
-            box-shadow: 0 0 10px rgba(124, 58, 237, 0.7);
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: left 700ms var(--ease), opacity 300ms var(--ease);
-        }
-
-        html.js .connect-visual.in .connect-dot { left: 100%; opacity: 1; }
 
         /* ---------- Activity / live metrics ---------- */
 
@@ -658,10 +534,7 @@
                                 <circle class="ring-progress" cx="60" cy="60" r="54" stroke-width="3" stroke-dasharray="339.29" stroke-dashoffset="339.29"></circle>
                             </svg>
                         </div>
-                        <div class="frame">
-                            <span class="frame-label">Lucid</span>
-                            <span class="frame-tag">Screenshot coming soon</span>
-                        </div>
+                        <img class="shot" src="assets/1.jpg" alt="Lucid focus session setup screen on iPhone">
                     </div>
                 </div>
             </div>
@@ -730,15 +603,7 @@
                     <p class="feature-note">This is what separates a focus session from a timer.</p>
                 </div>
                 <div class="feature-visual reveal">
-                    <div class="lock-cluster" id="lock-cluster">
-                        <div class="lock-chip" style="top:6%; left:50%; transform:translate(-50%,-50%); --d:0ms;">Instagram</div>
-                        <div class="lock-chip" style="top:26%; left:12%; --d:60ms;">X</div>
-                        <div class="lock-chip" style="top:26%; left:88%; transform:translateX(-100%); --d:120ms;">YouTube</div>
-                        <div class="lock-chip" style="top:74%; left:12%; --d:180ms;">TikTok</div>
-                        <div class="lock-chip" style="top:74%; left:88%; transform:translateX(-100%); --d:240ms;">Reddit</div>
-                        <div class="lock-chip" style="top:94%; left:50%; transform:translate(-50%,-100%); --d:300ms;">News</div>
-                        <div class="lock-center">Active session</div>
-                    </div>
+                    <img class="shot" src="assets/3.jpg" alt="Lucid Focus Lock toggle blocking a distracting app during a session">
                 </div>
             </div>
         </section>
@@ -752,15 +617,7 @@
                     <p class="lede">The Lucid Chrome extension carries your focus session into the browser, syncing automatically so one session protects both screens.</p>
                 </div>
                 <div class="feature-visual reveal">
-                    <div class="connect-visual" id="connect-visual">
-                        <div class="card connect-card">
-                            <span class="frame-label">iPhone</span>
-                        </div>
-                        <div class="connect-line"><span class="connect-dot"></span></div>
-                        <div class="card connect-card">
-                            <span class="frame-label">Chrome</span>
-                        </div>
-                    </div>
+                    <img class="shot" src="assets/2.jpg" alt="Lucid focus session synced with the Chrome extension">
                 </div>
             </div>
         </section>
@@ -779,11 +636,7 @@
                     </div>
                 </div>
                 <div class="activity-visual reveal">
-                    <div class="frame card">
-                        <span class="frame-label">Activity history</span>
-                        <span class="frame-tag">Screenshot coming soon</span>
-                    </div>
-                </div>
+                    <img class="shot" src="assets/5.jpg" alt="Lucid activity history showing focused hours over time">
             </div>
         </section>
 
@@ -800,39 +653,41 @@
                     </div>
                 </div>
                 <div class="feature-visual reveal">
-                    <div class="frame card">
-                        <span class="frame-label">AI Insights</span>
-                        <span class="frame-tag">Screenshot coming soon</span>
-                    </div>
+                    <img class="shot" src="assets/4.jpg" alt="Lucid AI insight about optimal focus session length">
                 </div>
             </div>
         </section>
 
         <!-- SUPPORTING FEATURES -->
         <section>
-            <div class="wrap">
-                <div class="section-head reveal">
-                    <span class="eyebrow">The rest of the system</span>
-                    <h2>Everything else that's part of it.</h2>
+            <div class="wrap activity-grid" style="align-items: start;">
+                <div>
+                    <div class="section-head reveal">
+                        <span class="eyebrow">The rest of the system</span>
+                        <h2>Everything else that's part of it.</h2>
+                    </div>
+                    <ul class="feature-list reveal">
+                        <li>
+                            <h3>Custom activities</h3>
+                            <p>Define what you're focusing on, in your own words — not a fixed category list.</p>
+                        </li>
+                        <li>
+                            <h3>Background focus music</h3>
+                            <p>Audio built to support concentration during a session, not compete with it.</p>
+                        </li>
+                        <li>
+                            <h3>Completion alarms</h3>
+                            <p>A clear signal when a session ends, so you're not watching the clock.</p>
+                        </li>
+                        <li>
+                            <h3>Cross-device sync</h3>
+                            <p>Start a session on your phone and stay in sync on your computer.</p>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="feature-list reveal">
-                    <li>
-                        <h3>Custom activities</h3>
-                        <p>Define what you're focusing on, in your own words — not a fixed category list.</p>
-                    </li>
-                    <li>
-                        <h3>Background focus music</h3>
-                        <p>Audio built to support concentration during a session, not compete with it.</p>
-                    </li>
-                    <li>
-                        <h3>Completion alarms</h3>
-                        <p>A clear signal when a session ends, so you're not watching the clock.</p>
-                    </li>
-                    <li>
-                        <h3>Cross-device sync</h3>
-                        <p>Start a session on your phone and stay in sync on your computer.</p>
-                    </li>
-                </ul>
+                <div class="activity-visual reveal">
+                    <img class="shot" src="assets/6.jpg" alt="Lucid settings screen showing custom focus activities and app blocking">
+                </div>
             </div>
         </section>
 
@@ -905,7 +760,7 @@
 
             if (reduceMotion || !('IntersectionObserver' in window)) {
                 revealEls.forEach(function (el) { el.classList.add('in'); });
-                document.querySelectorAll('#distraction-field, #lock-cluster, #connect-visual').forEach(function (el) { el.classList.add('in'); });
+                document.querySelectorAll('#distraction-field').forEach(function (el) { el.classList.add('in'); });
                 document.querySelectorAll('#metrics-row .num').forEach(countUp);
                 var heroRingStatic = document.querySelector('#hero-ring .ring-progress');
                 if (heroRingStatic) heroRingStatic.style.strokeDashoffset = 95;
@@ -925,7 +780,7 @@
 
             revealEls.forEach(function (el) { observer.observe(el); });
 
-            ['distraction-field', 'lock-cluster', 'connect-visual'].forEach(function (id) {
+            ['distraction-field'].forEach(function (id) {
                 var el = document.getElementById(id);
                 if (!el) return;
                 var obs = new IntersectionObserver(function (entries) {
