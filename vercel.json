@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/:variant(V1|V2|V3)", "destination": "/index.html" }
+    { "source": "/:variant(V1|V2|V3|v1|v2|v3)", "destination": "/index.html" }
   ]
 }
